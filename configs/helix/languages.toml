@@ -1,0 +1,27 @@
+[language-server.rust-analyzer.config]
+rustfmt.enableRangeFormatting = false
+
+cargo.allFeatures = true
+cargo.loadOutDirsFromCheck = true
+
+check.command = "clippy"
+check.allTargets = true
+
+diagnostics.enable = true
+diagnostics.experimental.enable = true
+diagnostics.disabled = []
+
+imports.prefix = "crate"
+
+inlayHints.lifetimeElisionHints.enable = "always"
+inlayHints.lifetimeElisionHints.useParameterNames = true
+inlayHints.reborrowHints.enable = "always"
+
+lens.enable = true
+lens.runnables.enable = true
+
+assist.importGranularity = "crate"
+
+[[language]]
+name = "rust"
+language-servers = ["rust-analyzer"]

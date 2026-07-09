@@ -1,0 +1,48 @@
+theme = "catppuccin_macchiato"
+
+[editor]
+line-number = "relative"
+cursorline = true
+bufferline = "multiple"
+color-modes = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-modification-indicator", "version-control"]
+center = []
+right = ["diagnostics", "position", "file-encoding", "file-line-ending", "file-type"]
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.indent-guides]
+render = true
+
+
+[keys.normal.space.t]
+c = ":buffer-close"
+m = ':sh mdopen "%{buffer_name}" &'
+g = [":new", ":insert-output lazygit", ":buffer-close!", ":redraw", ":reload-all"]
+y = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi "%{buffer_name}" --chooser-file=/tmp/unique-file',
+  ':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+]
+
+[keys.normal."]"]
+b = ":buffer-next"
+
+[keys.normal."["]
+b = ":buffer-previous"
+
+[editor.lsp]
+display-inlay-hints = true

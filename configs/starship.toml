@@ -1,0 +1,33 @@
+# ~/.config/starship.toml
+
+add_newline = false
+format = "$os$directory$git_branch$rust$python$lua$character"
+
+[character]
+success_symbol = "➜ "
+error_symbol = "󰯈"
+
+[os.symbols]
+Alpine = ""
+Arch = ""
+Kali = "" 
+Linux = ""
+Macos = ""
+Raspbian = ""
+Ubuntu = "" 
+Windows = "󰍲" 
+
+[directory]
+read_only =  "󰌾"
+
+[git_branch]
+symbol = "" 
+
+[lua]
+symbol = "" 
+
+[python]
+symbol = "" 
+
+[rust]
+symbol = "" 

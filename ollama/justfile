@@ -1,0 +1,87 @@
+CONTAINER_NAME := "ollama"
+#  CPU/GPU - gemma4:e4b
+# 32 / 68% CPU/GPU - Qwen3.5:9b
+# 21/79% CPU/GPU - Qwen3.5:4b
+MODEL := "gemma4:e4b"
+MODEL_DESC := "gemma4:e4b"
+MODEL_CTX := "42000"
+
+# 100% GPU
+SMALL_MODEL := "gemma4:e2b"
+SMALL_MODEL_DESC := "gemma4:e2b"
+SMALL_MODEL_CTX := "32000"
+
+# Run the ollama docker container detached
+run:
+	docker compose up -d
+
+# Lists installed modules in the ollama container
+list-models:
+	docker exec -it {{CONTAINER_NAME}} ollama list
+
+install-models:
+    #!/usr/bin/env bash
+    set -eo pipefail
+
+    ./scripts/install-model.sh "{{CONTAINER_NAME}}" "{{MODEL}}-opencode" "{{MODEL}}" "{{MODEL_DESC}}" "{{MODEL_CTX}}"
+    ./scripts/install-model.sh "{{CONTAINER_NAME}}" "{{SMALL_MODEL}}-opencode" "{{SMALL_MODEL}}" "{{SMALL_MODEL_DESC}}" "{{SMALL_MODEL_CTX}}"
+
+
+create-opencode-config:
+    #!/usr/bin/env bash
+    set pipefail -e
+
+    OPENCODE_CONFIG_DIR="$HOME/.config/opencode"
+    FILE_NAME="opencode.json"
+
+    MODEL_NAME="{{MODEL}}-opencode"
+    SMALL_MODEL_NAME="{{SMALL_MODEL}}-opencode"
+
+    mkdir -p $OPENCODE_CONFIG_DIR
+    cat > $OPENCODE_CONFIG_DIR/$FILE_NAME << EOF
+    {
+      "\$schema": "https://opencode.ai/config.json",
+      "provider": {
+        "ollama": {
+          "npm": "@ai-sdk/openai-compatible",
+          "name": "Ollama (local)",
+          "options": {
+            "baseURL": "http://localhost:11434/v1"
+          },
+          "models": {
+            "$MODEL_NAME": { "name": "{{MODEL_DESC}}" },
+            "$SMALL_MODEL_NAME": { "name": "{{SMALL_MODEL_DESC}}" },
+          }
+        },
+        "anthropic": {
+          "name": "Anthropic",
+          "options": {
+            "baseURL": "https://api.anthropic.com/v1"
+          }
+        }
+      },
+      "model": "ollama/$MODEL_NAME",
+      "small_model": "ollama/$SMALL_MODEL_NAME",
+      "agent": {
+        "code-reviewer": {
+          "description": "Reviews code for best practices and potential issues",
+          "mode": "subagent",
+          "prompt": "You are a senior engineer in a bad mood tasked with reviewing the code in this repo. Focus on security, performance, and maintainability. Your response should define the title of the problem, the file name, the line numbers and then detail the issue. These should be ranked by severity.",
+          "tools": {
+            "write": false,
+            "edit": false
+          }
+        },
+        "branch-reviewer": {
+          "description": "Reviews branches for best practices and potential issues",
+          "mode": "subagent",
+          "prompt": "You are a senior engineer in a bad mood tasked with reviewing the updates in this git branch. Focus on security, performance, and maintainability.  Your response should define the title of the problem, the file name, the line numbers and then detail the issue. These should be ranked by severity.",
+          "tools": {
+            "write": false,
+            "edit": false
+          }
+        }
+      }
+    }
+    EOF
+    cat $OPENCODE_CONFIG_DIR/$FILE_NAME
