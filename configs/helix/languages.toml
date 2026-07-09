@@ -25,3 +25,4 @@ assist.importGranularity = "crate"
 [[language]]
 name = "rust"
 language-servers = ["rust-analyzer"]
+auto-format = false
