@@ -17,6 +17,7 @@ eval "$(ssh-agent -s)"
 # add ssh keys
 ssh-add ~/.ssh/azuredevops_rsa 
 ssh-add ~/.ssh/github_ed25519 
+ssh-add ~/.ssh/id_ed25519_do_amackerel
 
 # set home dirs
 export XDG_CONFIG_HOME="$HOME/.config"
