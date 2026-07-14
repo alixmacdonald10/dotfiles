@@ -5,6 +5,7 @@ line-number = "relative"
 cursorline = true
 bufferline = "multiple"
 color-modes = true
+clipboard-provider = "wayland"
 
 [editor.cursor-shape]
 insert = "bar"
@@ -25,6 +26,8 @@ mode.select = "SELECT"
 [editor.indent-guides]
 render = true
 
+[editor.soft-wrap]
+enable = true
 
 [keys.normal.space.t]
 c = ":buffer-close"
