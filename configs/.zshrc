@@ -38,6 +38,8 @@ alias ls='eza -l'
 alias cat='bat'
 alias cd='z'
 alias flameshot="QT_QPA_PLATFORM=wayland flameshot gui"
+## disable GPU for anki
+alias anki="QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu" anki"
 # alias docker="podman"
 alias nod="nordlayer disconnect"
 alias noc="nordlayer connect V8zIwbpQ8z0l"
